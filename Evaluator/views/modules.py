@@ -2,7 +2,7 @@ from __future__ import unicode_literals
 
 import csv
 
-from django.shortcuts import render, redirect, reverse, render_to_response
+from django.shortcuts import render, redirect, reverse
 from django.contrib.auth.forms import PasswordChangeForm, UserChangeForm
 from django.contrib.auth import update_session_auth_hash, authenticate, login
 from django.views.generic import CreateView, UpdateView, DeleteView, ListView
@@ -45,6 +45,7 @@ User._meta.get_field('email').blank = False
 User._meta.get_field('is_staff').default = True
 
 logger = logging.getLogger('mylogs')
+
 
 def download_csv_report(result, report_name):
     response = HttpResponse(content_type='text/csv')

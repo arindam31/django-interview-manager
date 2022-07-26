@@ -6,7 +6,7 @@ from Evaluator.views.modules import *
 
 
 def user_login(request):
-    if request.user.is_authenticated():
+    if request.user.is_authenticated:
         return redirect('/profile')
 
     if request.method == 'POST':

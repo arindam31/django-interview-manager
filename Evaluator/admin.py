@@ -1,33 +1,36 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-
-from django.contrib import admin
-
-# Register your models here.
-from django.contrib import admin
+from .models import Document
+from .models import InterviewRatingSheet
+from .models import RatingSheet, Aspect, RatingAspect
+from .models import JobOpening
+from .models import Vendor
+from .models import Round
+from .models import QuestionSet
+from .models import Skill
+from .models import Question, Answer
+from .models import Interview
+from .models import Position
+from .models import Candidate
 from simple_history.admin import SimpleHistoryAdmin
 
-from .models import Candidate
-from .models import Position
-from .models import Interview
-from .models import Question, Answer
-from .models import Skill
-from .models import QuestionSet
-from .models import Round
-from .models import Vendor
-from .models import JobOpening
-from .models import RatingSheet, Aspect, RatingAspect
-from .models import InterviewRatingSheet
-from .models import Document
+from django.contrib import admin
+
+admin.autodiscover()
+admin.site.enable_nav_sidebar = False
+
+# Register your models here.
 
 
 class VendorAdmin(admin.ModelAdmin):
     model = Position
     list_display = ('name', 'v_type')
 
+
 class PositionAdmin(admin.ModelAdmin):
     model = Position
-    list_display = ('__str__', 'id_code','exp_needed', 'location', 'j_type')
+    list_display = ('__str__', 'id_code', 'exp_needed', 'location', 'j_type')
+
 
 class AnswerInline(admin.TabularInline):
     model = Answer
@@ -39,18 +42,22 @@ class QuestionAdmin(admin.ModelAdmin):
     list_filter = ['difficulty', 'skill']
     list_display = ('description', 'difficulty', 'skill')
     fieldsets = [
-        (None,               {'fields': ['description', 'difficulty', 'skill', 'qset']}),
+        (None,               {'fields': [
+         'description', 'difficulty', 'skill', 'qset']}),
 
     ]
     inlines = [AnswerInline]
+
 
 class RoundInline(admin.TabularInline):
     model = Round
     extra = 0
 
+
 class InterviewAdmin(SimpleHistoryAdmin):
     model = Interview
-    list_display = ('__str__', 'candidate','date', 'position', 'status', 'result')
+    list_display = ('__str__', 'candidate', 'date',
+                    'position', 'status', 'result')
     search_fields = ['candidate__name']
     list_editable = ['status', 'result']
     list_filter = ['status', 'result']
@@ -58,9 +65,11 @@ class InterviewAdmin(SimpleHistoryAdmin):
 
     inlines = [RoundInline]
 
+
 class AspectInline(admin.TabularInline):
     model = Aspect
     extra = 0
+
 
 class RatingAspectInline(admin.TabularInline):
     model = RatingAspect
@@ -89,13 +98,16 @@ class InterviewRatingSheetAdmin(admin.ModelAdmin):
     readonly_fields = ['interview', 'round_name', ]
     inlines = [RatingAspectInline]
 
+
 class DocumentInline(admin.TabularInline):
     model = Document
     extra = 0
 
+
 class CandidateAdmin(admin.ModelAdmin):
     model = Candidate
-    list_display = ['name', 'position_applied', 'created_at', 'vendor', 'candi_resume']
+    list_display = ['name', 'position_applied',
+                    'created_at', 'vendor', 'candi_resume']
     search_fields = ['name']
     list_filter = ['position_applied']
 
@@ -104,6 +116,7 @@ class CandidateAdmin(admin.ModelAdmin):
     def candi_resume(self, object):
         return object.document
 
+
 class JobOpeningAdmin(admin.ModelAdmin):
     model = JobOpening
 
@@ -111,6 +124,7 @@ class JobOpeningAdmin(admin.ModelAdmin):
 
     def position_code(self, object):
         return object.position.id_code
+
 
 admin.site.register(Vendor, VendorAdmin)
 admin.site.register(Candidate, CandidateAdmin)

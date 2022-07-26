@@ -22,12 +22,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '+m5kfxu4@uuzymgw8sx1@cpse*pqfd1%(0o(r_ms=+fud-#xi9'
+SECRET_KEY = os.environ.get("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = int(os.environ.get("DEBUG", default=0))
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS").split(" ")
 
 
 # Application definition
@@ -42,8 +42,8 @@ INSTALLED_APPS = [
     'simple_history',
     'mathfilters',
     'Evaluator',
-    'django.contrib.admin', # This ordering has been brought
-    'django.contrib.auth', # down so that custom auth templates works
+    'django.contrib.admin',  # This ordering has been brought
+    'django.contrib.auth',  # down so that custom auth templates works
 ]
 
 MIDDLEWARE = [
@@ -84,8 +84,11 @@ WSGI_APPLICATION = 'Recruitment.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': os.environ.get("POSTGRES_NAME"),
+        'USER': os.environ.get("POSTGRES_USER"),
+        'PASSWORD': os.environ.get("POSTGRES_PASSWORD"),
+        'HOST': 'host.docker.internal'
     }
 }
 
@@ -114,7 +117,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'Asia/Kolkata'
+TIME_ZONE = 'Europe/Berlin'
 
 USE_I18N = True
 
@@ -137,59 +140,60 @@ LOGIN_REDIRECT_URL = '/profile'
 # This is where one would be lead if not logged in.
 LOGIN_URL = '/login'
 
-#Logging Settings
+# Logging Settings
 LOG_LOCATION = os.path.join(BASE_DIR, 'Logs')
 
 LOGGING = {
-    'version':1,
+    'version': 1,
     'disable_existing_loggers': True,
-    'formatters':{
-        'my_formatter':{
-                        'format': '%(asctime)s, File: %(module)s.py, Function: %(funcName)s, Message: %(message)s'
-                    }
+    'formatters': {
+        'my_formatter': {
+            'format': '%(asctime)s, File: %(module)s.py, Function: %(funcName)s, Message: %(message)s'
+        }
 
-                },
-    'handlers':{
+    },
+    'handlers': {
         'file': {
-                    'level': 'DEBUG',
-                    'class': 'logging.FileHandler',
-                    'filename': os.path.join(LOG_LOCATION, 'debug.log'),
-                    'formatter': 'my_formatter',
-                },
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(LOG_LOCATION, 'debug.log'),
+            'formatter': 'my_formatter',
+        },
         'errorfile': {
-                    'level': 'DEBUG',
-                    'class': 'logging.FileHandler',
-                    'filename': os.path.join(LOG_LOCATION, 'error.log'),
-                    'formatter': 'my_formatter',
-                },
+            'level': 'DEBUG',
+            'class': 'logging.FileHandler',
+            'filename': os.path.join(LOG_LOCATION, 'error.log'),
+            'formatter': 'my_formatter',
+        },
         'mail_admins': {
-                    'level': 'ERROR',
-                    'class': 'django.utils.log.AdminEmailHandler',
-                    'include_html': False,
-                },
+            'level': 'ERROR',
+            'class': 'django.utils.log.AdminEmailHandler',
+            'include_html': False,
+        },
         'console': {
-                    'level': 'DEBUG',
-                    'class': 'logging.StreamHandler',
-                    'formatter': 'my_formatter',
-                },
-               },
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+            'formatter': 'my_formatter',
+        },
+    },
     'loggers': {
 
-            'mylogs': {
-                        'handlers': ['file'],
-                        'level': 'DEBUG',
-                        'propagate': True,
-                      },
-            'django': {
-                'handlers': ['errorfile'],
-                'level': 'ERROR',
-                'propagate': False,
+        'mylogs': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+            'propagate': True,
+        },
+        'django': {
+            'handlers': ['errorfile'],
+            'level': 'ERROR',
+            'propagate': False,
         },
         'django.request': {
             'handlers': ['mail_admins'],
             'level': 'ERROR',
             'propagate': False,
         },
-                }
-            }
+    }
+}
 
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'

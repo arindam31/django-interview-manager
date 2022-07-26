@@ -4,3 +4,8 @@
 *.py.swp
 *.log
 *.pdf
+data
+Logs
+*.sqlite
+db.sqlite3
+.env.dev

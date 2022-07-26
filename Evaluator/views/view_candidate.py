@@ -1,8 +1,9 @@
-from modules import *
+from Evaluator.views.modules import *
 
-#***********************************************************************
-#-------------------------------- CANDIDATE ---------------------------
-#***********************************************************************
+# ***********************************************************************
+# -------------------------------- CANDIDATE ---------------------------
+# ***********************************************************************
+
 
 @user_passes_test(lambda u: u.is_staff)
 @login_required(login_url="/login")
@@ -10,15 +11,15 @@ def bulk_upload_candis(request):
     logger.debug('Creating Bulk candidates and interviews')
     form = forms.BulkCreateInterviewsAndCandidates()
     round_forms = forms.RoundInLineFormSet(
-            queryset=Round.objects.none()
-            )
+        queryset=Round.objects.none()
+    )
 
     if request.method == 'POST':
         form = forms.BulkCreateInterviewsAndCandidates(request.POST)
         round_forms = forms.RoundInLineFormSet(
-                request.POST,
-                queryset=Round.objects.none()
-                )
+            request.POST,
+            queryset=Round.objects.none()
+        )
 
         if form.is_valid() and round_forms.is_valid():
 
@@ -33,11 +34,11 @@ def bulk_upload_candis(request):
             vendor = Vendor.objects.get(id=vendor_id)
             date = form.cleaned_data['date']
 
-
-            #Create Candidates
+            # Create Candidates
             for candi in names:
                 logger.debug('Creating for :%s' % candi)
-                my_candi = Candidate(name=candi, position_applied=position, experience=experience, vendor=vendor)
+                my_candi = Candidate(
+                    name=candi, position_applied=position, experience=experience, vendor=vendor)
                 my_candi.save()
                 logger.debug('Candidate created')
 
@@ -45,24 +46,24 @@ def bulk_upload_candis(request):
                     candidate=my_candi,
                     date=date,
                     position=position,
-                    )
+                )
 
                 my_interview.save()
 
                 logger.debug('Interview created')
 
-                #Creating and Saving Rounds
+                # Creating and Saving Rounds
                 logger.debug('Creating Rounds')
                 for int_round in round_forms:
                     r = Round.objects.create(
-                        name = int_round.cleaned_data['name'],
-                        assignee = int_round.cleaned_data['assignee'],
-                        comments = int_round.cleaned_data['comments'],
-                        date = int_round.cleaned_data['date'],
-                        contact_time = int_round.cleaned_data['contact_time'],
-                        round_type= int_round.cleaned_data['round_type'],
+                        name=int_round.cleaned_data['name'],
+                        assignee=int_round.cleaned_data['assignee'],
+                        comments=int_round.cleaned_data['comments'],
+                        date=int_round.cleaned_data['date'],
+                        contact_time=int_round.cleaned_data['contact_time'],
+                        round_type=int_round.cleaned_data['round_type'],
                         interview=my_interview,
-                        )
+                    )
                     for support in int_round.cleaned_data['supporting_interviewer']:
                         r.supporting_interviewer.add(support)
                     r.save()
@@ -75,7 +76,6 @@ def bulk_upload_candis(request):
 
     args = {'form': form, 'round_form': round_forms}
     return render(request, 'bulk_upload_candis.html', args)
-
 
 
 @user_passes_test(lambda u: u.is_staff)
@@ -129,7 +129,7 @@ def edit_candidate(request, candidate_pk):
             return HttpResponseRedirect(candidate.get_absolute_url())
     else:
         form = forms.AddCandidateForm(instance=candidate)
-        args = {'form':form}
+        args = {'form': form}
         return render(request, 'add_candidate.html', args)
 
 
@@ -145,7 +145,8 @@ def candi_details(request, candidate_pk):
         form = forms.DocumentForm(request.POST, request.FILES)
         if form.is_valid():
             document = form.save(commit=False)
-            document.candidate = candidate # This is because, candidate is not passed in form.POST
+            # This is because, candidate is not passed in form.POST
+            document.candidate = candidate
             document.save()
 
     # Find out if the candidate has a resume attached.
@@ -154,7 +155,7 @@ def candi_details(request, candidate_pk):
     except Document.DoesNotExist:
         candi_document = None
 
-
-    args = {'candidate': candidate, 'interviews': interviews, 'candi_doc': candi_document, 'resume_form': resume_form}
+    args = {'candidate': candidate, 'interviews': interviews,
+            'candi_doc': candi_document, 'resume_form': resume_form}
 
     return render(request, 'details_candidate.html', args)

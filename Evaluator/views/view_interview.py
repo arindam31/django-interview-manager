@@ -1,8 +1,9 @@
-from modules import *
+from Evaluator.views.modules import *
 
-#***********************************************************************
-#-------------------------------- INTERVIEW ---------------------------
-#***********************************************************************
+# ***********************************************************************
+# -------------------------------- INTERVIEW ---------------------------
+# ***********************************************************************
+
 
 def get_interviews_as_per_filters(request_get):
     args = {}
@@ -23,16 +24,14 @@ def get_interviews_as_per_filters(request_get):
     if end_date:
         args['date__lte'] = end_date
 
-
-
     # 1 is today, 2 is past 7 days, 3 is this month, 4 is this year, yesterday is 5
     reg_year = {
-            'today': timezone.now().today().date(),
-            'month': timezone.now().month,
-            'year': timezone.now().year,
-            'yesterday': timezone.now().today().date() - timezone.timedelta(days=1),
-            'past7days': timezone.now().today().date() - timezone.timedelta(days=7)
-            }
+        'today': timezone.now().today().date(),
+        'month': timezone.now().month,
+        'year': timezone.now().year,
+        'yesterday': timezone.now().today().date() - timezone.timedelta(days=1),
+        'past7days': timezone.now().today().date() - timezone.timedelta(days=7)
+    }
 
     registry_year = request_get['registry_year']
 
@@ -73,15 +72,18 @@ def all_interviews(request):
         """
         interviews = get_interviews_as_per_filters(request.GET)
 
-        result = [['Candidate Name', 'Interview Date', 'Position', 'Status', 'Result'],]
+        result = [['Candidate Name', 'Interview Date',
+                   'Position', 'Status', 'Result'], ]
         for interview in interviews:
-            row = [interview.candidate.name, interview.date, interview.position.name, interview.get_status_display(), interview.get_result_display()]
+            row = [interview.candidate.name, interview.date, interview.position.name,
+                   interview.get_status_display(), interview.get_result_display()]
             result.append(row)
 
-        logger.debug('Download interview filter results. Initiated by: %s' % request.user.username)
-        response = download_csv_report(result, report_name='report_interview.csv')
+        logger.debug(
+            'Download interview filter results. Initiated by: %s' % request.user.username)
+        response = download_csv_report(
+            result, report_name='report_interview.csv')
         return response
-
 
     interviews = Interview.objects.get_queryset().order_by('-date')
     interview_filter = InterviewFilter(request.GET, queryset=interviews)
@@ -112,21 +114,20 @@ def get_interviews_by_date(request, year, month, day):
         return render(request, 'Evaluator/interview_list.html', {'message': "No interviews found scheduled! "})
 
 
-
 @login_required(login_url="/login")
 @user_passes_test(lambda u: u.is_staff)
 @user_passes_test(lambda u: 'Evaluator.add_interview' in u.get_group_permissions())
 def add_interview(request):
     round_forms = forms.RoundInLineFormSet(
-            queryset=Round.objects.none()
-            )
+        queryset=Round.objects.none()
+    )
     form = forms.AddInterview()
     if request.method == 'POST':
         form = forms.AddInterview(request.POST)
         round_forms = forms.RoundInLineFormSet(
-                request.POST,
-                queryset=Round.objects.none()
-                )
+            request.POST,
+            queryset=Round.objects.none()
+        )
         if form.is_valid() and round_forms.is_valid():
             interview = form.save()
             rounds = round_forms.save(commit=False)
@@ -135,10 +136,10 @@ def add_interview(request):
                 a_round.save()
             return HttpResponseRedirect(interview.get_absolute_url())
     return render(request, 'add_interview.html',
-            {
-                'form':form,
-                'formset':round_forms
-            })
+                  {
+                      'form': form,
+                      'formset': round_forms
+                  })
 
 
 @user_passes_test(lambda u: u.is_staff)
@@ -155,21 +156,20 @@ def interviews_details(request, interview_pk):
     return render(request, 'details_interview.html', args)
 
 
-
 @user_passes_test(lambda u: u.is_staff)
 @login_required(login_url="/login")
 def edit_interview(request, interview_pk):
     interview = Interview.objects.get(pk=interview_pk)
     form = forms.AddInterview(instance=interview)
     round_forms = forms.RoundInLineFormSet(
-            queryset=form.instance.round_set.all()
-            )
+        queryset=form.instance.round_set.all()
+    )
     if request.method == 'POST':
         form = forms.AddInterview(request.POST, instance=interview)
         round_forms = forms.RoundInLineFormSet(
-                request.POST,
-                queryset=form.instance.round_set.all()
-                )
+            request.POST,
+            queryset=form.instance.round_set.all()
+        )
         if form.is_valid() and round_forms.is_valid():
             form.save()
             rnds = round_forms.save(commit=False)
@@ -178,16 +178,16 @@ def edit_interview(request, interview_pk):
                 rnd.save()
             return HttpResponseRedirect(interview.get_absolute_url())
     return render(request, 'add_interview.html',
-            {
-                'form':form,
-                'formset':round_forms
-            })
+                  {
+                      'form': form,
+                      'formset': round_forms
+                  })
+
 
 @user_passes_test(lambda u: u.is_staff)
 @login_required(login_url="/login")
 def calendar(request, year, month):
     my_interviews = Interview.objects.order_by('date').filter(
-    date__year=year, date__month=month)
+        date__year=year, date__month=month)
     cal = InterviewCalendar(my_interviews).formatmonth(year, month)
     return render(request, 'Evaluator/calendar.html', {'calendar': mark_safe(cal), 'year_passed': year, 'month_passed': month})
-

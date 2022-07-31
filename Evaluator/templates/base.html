@@ -1,145 +1,151 @@
 <!DOCTYPE html>
 <html lang="en">
 {% load static %}
-<head>
-     <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}" >
-    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}" >
-    <link rel="stylesheet" href="{% static 'css/web.css' %}" >
-    <meta charset="UTF-8">
 
-    {% block head %}
-    <title>Login Page</title>
-    {% endblock %}
+<head>
+  <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+  <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+  <link rel="stylesheet" href="{% static 'css/web.css' %}">
+  <meta charset="UTF-8">
+
+  {% block title %}
+  <title>Login Page</title>
+  {% endblock %}
 </head>
 
 <body>
-    <br>
-    <div class="container">
-        <nav class="navbar navbar-default">
-          <div class="container-fluid">
-              <div class="navbar-header">
-                  <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                  </button>
-                  <a class="navbar-brand" href="">Company name</a>
-              </div>
-              <div id="navbar" class="navbar-collapse collapse">
-                  {% if user.is_authenticated %}
-                      <ul class="nav navbar-nav">
-                        <li class="active"><a href="/profile">Home</a></li>
-                        <li><a href="/profile/edit">Edit Profile</a></li>
-                        <!-- https://docs.djangoproject.com/en/1.11/ref/templates/builtins/#std:templatefilter-date -->
-                        <li><a href="/calendar/{% now "Y" %}/{% now "n" %}">Calendar</a></li>
-                      </ul>
+  <br>
+  <div class="container">
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+            aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="">Company name</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          {% if user.is_authenticated %}
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="/profile">Home</a></li>
+            <li><a href="/profile/edit">Edit Profile</a></li>
+            <!-- https://docs.djangoproject.com/en/1.11/ref/templates/builtins/#std:templatefilter-date -->
+            <li><a href='/calendar/{% now "Y" %}/{% now "n" %}'>Calendar</a></li>
+          </ul>
 
-              <div class="nav navbar-nav">
-                  <form class="navbar-form" role="search" action="{% url 'Evaluator:globalsearch' %}" method="get">
-                    <div class="input-group">
-                        <input required type="text" class="form-control" placeholder="Search" name="searchKeyword" id="searchKeyword">
-                        <div class="input-group-btn">
-                            <button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
-                        </div>
-                    </div>
-                  </form>
-              </div>
-
-                    <ul class="nav navbar-nav pull-right">
-                      <li><a href="{% url 'Evaluator:allOpenings' %}">Job Board</a></li>
-                      <li><a href="/logout">LogOut</a></li>
-                    </ul>
-                      {% else %}
-                      <ul class="nav navbar-nav">
-                      <li class="active"><a href="/">Home</a></li>
-                      <li><a href="#">About</a></li>
-                      <li><a href="#">Contact</a></li>
-                    </ul>
-                    <ul class="nav navbar-nav navbar-right">
-                      <li><a href="/register">Register</a></li>
-                    </ul>
-                      {% endif %}
-                  </div><!--/.nav-collapse -->
-                </div><!--/.container-fluid -->
-              </nav>
+          <div class="nav navbar-nav">
+            <form class="navbar-form" role="search" action="{% url 'Evaluator:globalsearch' %}" method="get">
+              <div class="input-group">
+                <input required type="text" class="form-control" placeholder="Search" name="searchKeyword"
+                  id="searchKeyword">
+                <div class="input-group-btn">
+                  <button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
                 </div>
+              </div>
+            </form>
+          </div>
 
-    <div class="container" id="context_area">
-      <div id="main">
-        {% block content %}
-        {% endblock %}
+          <ul class="nav navbar-nav pull-right">
+            <li><a href="{% url 'Evaluator:allOpenings' %}">Job Board</a></li>
+            <li><a href="/logout">LogOut</a></li>
+          </ul>
+          {% else %}
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="/">Home</a></li>
+            <li><a href="#">About</a></li>
+            <li><a href="#">Contact</a></li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="/register">Register</a></li>
+          </ul>
+          {% endif %}
+        </div>
+        <!--/.nav-collapse -->
+      </div>
+      <!--/.container-fluid -->
+    </nav>
+  </div>
+
+  <div class="container" id="context_area">
+    <div id="main">
+      {% block content %}
+      {% endblock %}
+    </div>
+  </div>
+
+  {% if user.is_authenticated %}
+
+  {% block footer %}
+  <footer id="footer1">
+
+
+    <div class="container" id="footer-div">
+
+      <div class="col-md-4">
+        <h5>Interview Links</h5>
+        <ul class="list-unstyled">
+
+          <li>
+            <a href="{% url 'Evaluator:add_interview' %}">Schedule Interview</a>
+          </li>
+          <li>
+            <a href="{% url 'Evaluator:all_interview' %}">All Interviews</a>
+          </li>
+        </ul>
+
+        <h5>Candidate Links</h5>
+        <ul class="list-unstyled">
+          <li>
+            <a href="{% url 'Evaluator:add_candidate' %}">Add Candidate</a>
+          </li>
+          <li>
+            <a href="{% url 'Evaluator:all_candidates' %}">All Candidates</a>
+          </li>
+          <li></li>
+          <li></li>
+        </ul>
+      </div>
+
+      <div class="col-md-4">
+        <h5 class="text-muted">Other links</h5>
+        <ul class="list-unstyled">
+          <li>
+            <a href="{% url 'Evaluator:createQuestionSet' %}">Create Question Set</a>
+          </li>
+          <li>
+            <a href="{% url 'Evaluator:allQueSets' %}">All Question Sets</a>
+          </li>
+          <li>
+            <a href="{% url 'Evaluator:question_list' %}">All Questions</a>
+          </li>
+        </ul>
+      </div>
+      <div class="col-md-4">
+        <h5>Company</h5>
+        <ul class="list-unstyled">
+          <li>
+            <a href="#">About Us</a>
+          </li>
+          <li>
+            <a href="#">Contact Us</a>
+          </li>
+        </ul>
       </div>
     </div>
 
-    {% if user.is_authenticated %}
-
-          {% block footer %}
-          <footer id="footer1">
+  </footer>
 
 
-              <div class="container" id="footer-div">
-
-                 <div class="col-md-4">
-                    <h5>Interview Links</h5>
-                    <ul class="list-unstyled">
-
-                      <li>
-                        <a href="{% url 'Evaluator:add_interview' %}">Schedule Interview</a>
-                      </li>
-                      <li>
-                        <a href="{% url 'Evaluator:all_interview' %}">All Interviews</a>
-                      </li>
-                    </ul>
-
-                    <h5>Candidate Links</h5>
-                      <ul class="list-unstyled">
-                      <li>
-                        <a href="{% url 'Evaluator:add_candidate' %}">Add Candidate</a>
-                      </li>
-                      <li>
-                        <a href="{% url 'Evaluator:all_candidates' %}">All Candidates</a>
-                      </li>
-                      <li></li>
-                      <li></li>
-                    </ul>
-                </div>
-
-              <div class="col-md-4">
-                  <h5 class="text-muted">Other links</h5>
-                  <ul class="list-unstyled">
-                      <li>
-                          <a href="{% url 'Evaluator:createQuestionSet' %}">Create Question Set</a>
-                      </li>
-                      <li>
-                          <a href="{% url 'Evaluator:allQueSets' %}">All Question Sets</a>
-                      </li>
-                      <li>
-                          <a href="{% url 'Evaluator:question_list' %}">All Questions</a>
-                      </li>
-                  </ul>
-              </div>
-              <div class="col-md-4">
-                  <h5>Company</h5>
-                  <ul class="list-unstyled">
-                      <li>
-                          <a href="#">About Us</a>
-                      </li>
-                      <li>
-                          <a href="#">Contact Us</a>
-                      </li>
-                    </ul>
-              </div>
-            </div>
-
-        </footer>
-
-
-      {% endblock %}
-    {% endif %}
-    <script src="{% static 'js/jquery.js' %}"></script>
-    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+  {% endblock %}
+  {% endif %}
+  <script src="{% static 'js/jquery.js' %}"></script>
+  <script src="{% static 'js/bootstrap.min.js' %}"></script>
 
 
 </body>
+
 </html>

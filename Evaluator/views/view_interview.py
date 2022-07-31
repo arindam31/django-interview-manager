@@ -97,7 +97,11 @@ def all_interviews(request):
     except EmptyPage:
         page_interviews = paginator.page(paginator.num_pages)
 
-    return render(request, 'all_interviews.html', {'filter': interview_filter, 'interviews': page_interviews})
+    return render(request, 'all_interviews.html',
+                  {'filter': interview_filter,
+                   'interviews': page_interviews,
+                   'title': 'All Interviews'
+                   })
 
 
 @user_passes_test(lambda u: u.is_staff)

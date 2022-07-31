@@ -145,7 +145,7 @@ LOG_LOCATION = os.path.join(BASE_DIR, 'Logs')
 
 LOGGING = {
     'version': 1,
-    'disable_existing_loggers': True,
+    'disable_existing_loggers': False,
     'formatters': {
         'my_formatter': {
             'format': '%(asctime)s, File: %(module)s.py, Function: %(funcName)s, Message: %(message)s'
@@ -179,17 +179,17 @@ LOGGING = {
     'loggers': {
 
         'mylogs': {
-            'handlers': ['file'],
+            'handlers': ['console'],
             'level': 'DEBUG',
             'propagate': True,
         },
         'django': {
-            'handlers': ['errorfile'],
+            'handlers': ['console'],
             'level': 'ERROR',
             'propagate': False,
         },
         'django.request': {
-            'handlers': ['mail_admins'],
+            'handlers': ['console'],
             'level': 'ERROR',
             'propagate': False,
         },

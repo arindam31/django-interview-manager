@@ -1,12 +1,12 @@
-from django.conf.urls import include, url
 from django.contrib import admin
 from django.views.i18n import JavaScriptCatalog
-from django.conf.urls.static import static
+from django.urls import path, include
 from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
-    url(r'^jsi18n/$', JavaScriptCatalog.as_view(), name='javascript-catalog'),
-    url(r'', include('Evaluator.urls')),
-    url(r'^admin/', admin.site.urls),
-    url('^', include('django.contrib.auth.urls')),
+    path(r"jsi18n/", JavaScriptCatalog.as_view(), name="javascript-catalog"),
+    path(r"", include("Evaluator.urls")),
+    path(r"admin/", admin.site.urls),
+    path("", include("django.contrib.auth.urls")),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

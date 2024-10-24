@@ -4,7 +4,7 @@ from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.contrib.admin.widgets import AdminDateWidget, AdminTimeWidget
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext as _
 
 from . import models
 
@@ -16,7 +16,6 @@ def present_or_future_date(value):
     if value < datetime.date.today():
         raise forms.ValidationError("The date cannot be in the past!")
     return value
-
 
 
 class RegistrationForm(UserCreationForm):

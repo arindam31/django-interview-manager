@@ -6,8 +6,8 @@
 
 ### Tools used:
 
-- Python 2.7
-- Django 1.11
+- Python 3.9
+- Django 5.1
 - Bootstrap 3.7
 
 ### 3rd party modules needed:

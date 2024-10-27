@@ -8,7 +8,9 @@ app_name = 'Evaluator'
 urlpatterns = [
     path(r"", views.index, name="index"),
     path(r"login/", views.user_login, name="login_users"),
-    path(r"logout/", LogoutView.as_view(), {"template_name": "logout.html"}),
+    path(
+        r"logout/", LogoutView.as_view(template_name="logout.html", next_page="/login")
+    ),
     path(r"profile/", views.profile, name="profile"),
     path(r"register/", views.register, name="register"),
     path(r"profile/edit/", views.edit_profile, name="edit_profile"),

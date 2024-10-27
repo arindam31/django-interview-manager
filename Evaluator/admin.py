@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
+from django.contrib.auth.admin import UserAdmin
+from django.contrib.auth.models import User
+
 from .models import Document
 from .models import InterviewRatingSheet
 from .models import RatingSheet, Aspect, RatingAspect
@@ -126,6 +129,10 @@ class JobOpeningAdmin(admin.ModelAdmin):
         return object.position.id_code
 
 
+class CustomUserAdmin(UserAdmin):
+    readonly_fields = ("last_login",)
+
+
 admin.site.register(Vendor, VendorAdmin)
 admin.site.register(Candidate, CandidateAdmin)
 admin.site.register(Position, PositionAdmin)
@@ -136,3 +143,5 @@ admin.site.register(JobOpening, JobOpeningAdmin)
 admin.site.register(QuestionSet)
 admin.site.register(RatingSheet, RatingSheetAdmin)
 admin.site.register(InterviewRatingSheet, InterviewRatingSheetAdmin)
+admin.site.unregister(User)
+admin.site.register(User, CustomUserAdmin)

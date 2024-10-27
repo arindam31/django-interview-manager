@@ -78,11 +78,7 @@ class QuestionForm(forms.ModelForm):
         model = models.Question
         fields = ['description', 'difficulty', 'skill', 'qset']
 
-AnswerFormSet = forms.modelformset_factory(
-        models.Answer,
-        form=AnswerForm,
-        extra=2
-                                            )
+AnswerFormSet = forms.modelformset_factory(models.Answer, form=AnswerForm, extra=2)
 
 AnswerInLineFormSet = forms.inlineformset_factory(
         models.Question,

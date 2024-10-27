@@ -130,72 +130,70 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR / "staticfiles"
+STATIC_URL = "static/"
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / "media"
+MEDIA_URL = "media/"
 
-# This is the url after one logs in.
+# This is the url after user logs in.
 LOGIN_REDIRECT_URL = '/profile'
 
 # This is where one would be lead if not logged in.
 LOGIN_URL = '/login'
 
 # Logging Settings
-LOG_LOCATION = os.path.join(BASE_DIR, 'Logs')
+LOG_LOCATION = BASE_DIR / "Logs"
 
 LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': True,
-    'formatters': {
-        'my_formatter': {
-            'format': '%(asctime)s, File: %(module)s.py, Function: %(funcName)s, Message: %(message)s'
+    "version": 1,
+    "disable_existing_loggers": True,
+    "formatters": {
+        "my_formatter": {
+            "format": "%(asctime)s, File: %(module)s.py, Function: %(funcName)s, Message: %(message)s"
         }
-
     },
-    'handlers': {
-        'file': {
-            'level': 'DEBUG',
-            'class': 'logging.FileHandler',
-            'filename': os.path.join(LOG_LOCATION, 'debug.log'),
-            'formatter': 'my_formatter',
+    "handlers": {
+        "file": {
+            "level": "DEBUG",
+            "class": "logging.FileHandler",
+            "filename": os.path.join(LOG_LOCATION, "debug.log"),
+            "formatter": "my_formatter",
         },
-        'errorfile': {
-            'level': 'DEBUG',
-            'class': 'logging.FileHandler',
-            'filename': os.path.join(LOG_LOCATION, 'error.log'),
-            'formatter': 'my_formatter',
+        "errorfile": {
+            "level": "DEBUG",
+            "class": "logging.FileHandler",
+            "filename": os.path.join(LOG_LOCATION, "error.log"),
+            "formatter": "my_formatter",
         },
-        'mail_admins': {
-            'level': 'ERROR',
-            'class': 'django.utils.log.AdminEmailHandler',
-            'include_html': False,
+        "mail_admins": {
+            "level": "ERROR",
+            "class": "django.utils.log.AdminEmailHandler",
+            "include_html": False,
         },
-        'console': {
-            'level': 'DEBUG',
-            'class': 'logging.StreamHandler',
-            'formatter': 'my_formatter',
+        "console": {
+            "level": "DEBUG",
+            "class": "logging.StreamHandler",
+            "formatter": "my_formatter",
         },
     },
-    'loggers': {
-
-        'mylogs': {
-            'handlers': ['file'],
-            'level': 'DEBUG',
-            'propagate': True,
+    "loggers": {
+        "mylogs": {
+            "handlers": ["file"],
+            "level": "INFO",
+            "propagate": True,
         },
-        'django': {
-            'handlers': ['errorfile'],
-            'level': 'ERROR',
-            'propagate': False,
+        "django": {
+            "handlers": ["errorfile"],
+            "level": "ERROR",
+            "propagate": False,
         },
-        'django.request': {
-            'handlers': ['mail_admins'],
-            'level': 'ERROR',
-            'propagate': False,
-        },
-    }
+        # "django.request": {
+        #     "handlers": ["mail_admins"],
+        #     "level": "ERROR",
+        #     "propagate": False,
+        # },
+    },
 }
 
 DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'

@@ -7,14 +7,13 @@ app_name = 'Evaluator'
 
 urlpatterns = [
     path(r"", views.index, name="index"),
-    # path(r'login', login, {'template_name': 'login.html'}),
-    path(r"login", views.user_login, name="login_users"),
-    path(r"logout", LogoutView.as_view(), {"template_name": "logout.html"}),
-    path(r"profile", views.profile, name="profile"),
-    path(r"register", views.register, name="register"),
-    path(r"profile/edit", views.edit_profile, name="edit_profile"),
-    path(r"profile/password", views.change_password, name="change_password"),
-    path(r"userDetails/<int:user_pk>", views.get_details_user, name="user_details"),
+    path(r"login/", views.user_login, name="login_users"),
+    path(r"logout/", LogoutView.as_view(), {"template_name": "logout.html"}),
+    path(r"profile/", views.profile, name="profile"),
+    path(r"register/", views.register, name="register"),
+    path(r"profile/edit/", views.edit_profile, name="edit_profile"),
+    path(r"profile/password/", views.change_password, name="change_password"),
+    path(r"userDetails/<int:user_pk>/", views.get_details_user, name="user_details"),
     # Question URLs
     path(r"questions", views.all_questions, name="question_list"),
     path(

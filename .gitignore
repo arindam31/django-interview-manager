@@ -10,3 +10,4 @@ Logs
 .env.dev
 .venv
 .env
+/staticfiles/

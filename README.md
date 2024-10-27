@@ -1,26 +1,15 @@
-# TheEvaluator
+# Interview Managament Tool
 
 ### Objective:
 
- A student/Candidate evaluation system along with Interview Management System.
+ A tool to save and plan interview related information ideal for a organisation
+ that wants to host such a system under its it own hood.
 
 ### Tools used:
 
-- Python 3.9
-- Django 5.1
-- Bootstrap 3.7
+- Backend: Django 4.x
+- Frontend: Bootstrap 3.7
 
-### 3rd party modules needed:
-
-- django-filter==1.1.0
-- simple-history
-- django-mathfilters==0.4.0
-
-### Features:
-
-- Staff (HR , Question Setters or Employee)  login and separate dashboard with tools to create , add, delete questions . **[Completed]**
-- Create Question set according to a mix of difficulty or auto generate these question sets based on candidate experience. **[Partially Completed]**
-- Create multi choice questions on multiple skills . **[Completed]**
 
 - ### Interview Management System:
 
@@ -43,7 +32,10 @@
   - Browser Notifications when a round is scheduled in someone's name.
   - Share Button beside Rating sheet . We can launch a modal with multi-selectable users , then send mail with attachment.
   - Auto send Rating Sheet to a selected Users (e.g may be HR).
-  - If a Interview is being created for user , check if previous interview for candidate was closed. 
+  - If a Interview is being created for user, check if previous interview for candidate was closed. 
+  - Auto send interview reminder email.
 
-  ### To-Dos:
-  - Migrate to Python 3
+  # Next release plan:
+  - APIs
+  - unittests
+  - coverage

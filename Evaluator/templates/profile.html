@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'base_new.html' %}
 {% load static %}
 
 {% block head %}
@@ -61,13 +61,13 @@
 
         <div class="row well">
             <h3 style="margin-top:0px;margin-bottom:20px"><span  class="label label-primary">Q & A</span></h3>
-    	    <p><a href="{% url 'Evaluator:add_question' %}">Add Question</a></p>
+            <p><a href="{% url 'Evaluator:add_question' %}">Add Question</a></p>
             <p><a href="{% url 'Evaluator:question_list' %}">All Questions</a></p>
         </div>
-    	<div class="row well">
+        <div class="row well">
             <h3 style="margin-top:0px;margin-bottom:20px"><span  class="label label-primary">Exam Tools</span></h3>
-    	    <p><a href="{% url 'Evaluator:allQueSets' %}">All QuestionSets</a></p>
-           	    <p><a href="{% url 'Evaluator:createQuestionSet' %}">Create Que Set</a></p>
+            <p><a href="{% url 'Evaluator:allQueSets' %}">All QuestionSets</a></p>
+            <p><a href="{% url 'Evaluator:createQuestionSet' %}">Create Que Set</a></p>
         </div>
     </div>
 

@@ -32,7 +32,7 @@ class VendorAdmin(admin.ModelAdmin):
 
 class PositionAdmin(admin.ModelAdmin):
     model = Position
-    list_display = ('__str__', 'id_code', 'exp_needed', 'location', 'j_type')
+    list_display = ("__str__", "id_code", "years_of_exp_needed", "location", "j_type")
 
 
 class AnswerInline(admin.TabularInline):

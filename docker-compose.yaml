@@ -10,4 +10,4 @@ services:
       - "8000:8000"
     container_name: interview_manager
     env_file:
-      - ./.env.dev
+      - ./.env

@@ -3,7 +3,6 @@ from __future__ import unicode_literals
 from pyexpat import model
 from django.contrib.auth.models import User
 from django.db import models
-from django.core.validators import RegexValidator
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.shortcuts import redirect
 from django.utils import timezone
@@ -14,102 +13,6 @@ from django.db.models.functions import TruncMonth
 
 from datetime import datetime
 from collections import OrderedDict
-
-
-class RatingSheet(models.Model):
-    name = models.CharField(max_length=100)
-    rate_min = models.IntegerField(
-        default=0, validators=[MinValueValidator(0)])
-    rate_max = models.IntegerField(
-        default=6, validators=[MaxValueValidator(100)])
-
-    def __str__(self):  # __unicode__ on Python 2
-        return self.name
-
-
-class Aspect(models.Model):
-    name = models.CharField(max_length=100)
-    description = models.TextField(null=True, default='')
-    rating_sheet = models.ForeignKey(RatingSheet, on_delete=models.CASCADE)
-    expected_rate = models.PositiveIntegerField(default=1)
-
-    def __str__(self):  # __unicode__ on Python 2
-        return self.name
-
-
-class Position(models.Model):
-    name = models.CharField(max_length=50)
-    id_code = models.CharField(max_length=10)
-    exp_needed = models.PositiveIntegerField(default=0)
-    technology = models.TextField(default='')
-    location = models.CharField(max_length=100, default='Pune')
-    rating_sheet = models.ForeignKey(
-        RatingSheet, null=True, on_delete=models.CASCADE)
-    type_choices = (
-        ('P', 'Permanent'),
-        ('T', 'Temporary'),
-        ('I', 'Intern'),
-    )
-    j_type = models.CharField(  # This field can be shown in template as get_status_display
-        max_length=1,
-        choices=type_choices,
-        default='P'
-    )
-
-    def __str__(self):  # __unicode__ on Python 2
-        return self.name
-
-
-class Skill(models.Model):
-    name = models.CharField('Name', max_length=20)
-    position = models.ManyToManyField(Position)
-
-    def __str__(self):  # __unicode__ on Python 2
-        return self.name
-
-
-class Vendor(models.Model):
-    name = models.CharField(max_length=100)
-    contact_validator = RegexValidator(regex='\d+')
-    phone_number = models.CharField(max_length=20, validators=[
-                                    contact_validator], null=True)
-    address = models.TextField()
-    type_choices = (
-        ('O', 'Online'),
-        ('R', 'Reference'),
-        ('RS', 'Recruitment Service'),
-        ('OT', 'Other'),
-        ('N', 'None')
-    )
-    v_type = models.CharField(  # This field can be shown in template as get_status_display
-        max_length=2,
-        choices=type_choices,
-        default='N'
-    )
-
-    def __str__(self):  # __unicode__ on Python 2
-        return self.name
-
-    def get_absolute_url(self):
-        return reverse('vendor_details', args=[str(self.id)])
-
-
-class Candidate(models.Model):
-    name = models.CharField(max_length=40)
-    contact_validator = RegexValidator(regex='\d+')
-    contact_primary = models.CharField(max_length=20, validators=[
-                                       contact_validator], null=True)
-    experience = models.PositiveIntegerField()
-    position_applied = models.ForeignKey(Position, on_delete=models.CASCADE)
-    vendor = models.ForeignKey(Vendor, null=True, on_delete=models.CASCADE)
-    skill = models.ManyToManyField(Skill, blank=True)
-    created_at = models.DateTimeField(default=timezone.now, editable=False)
-
-    def __str__(self):  # __unicode__ on Python 2
-        return self.name
-
-    def get_absolute_url(self):
-        return reverse('Evaluator:candi_details', args=[str(self.id)])
 
 
 class QuestionSet(models.Model):
@@ -284,39 +187,6 @@ class Answer(models.Model):
 
     def __str__(self):
         return self.detail
-
-
-class InterviewRatingSheet(models.Model):
-    name = models.CharField(max_length=200, default='MySheet')
-    interview = models.ForeignKey(
-        Interview, null=True, on_delete=models.CASCADE)
-    round_name = models.OneToOneField(
-        Round, null=True, on_delete=models.CASCADE)
-    comment = models.TextField(default='', null=True)
-
-    def __str__(self):  # __unicode__ on Python 2
-        return self.name
-
-
-class RatingAspect(models.Model):
-    name = models.CharField(max_length=100)
-    comment = models.TextField(null=True, default='', blank=True)
-    interview_rating_sheet = models.ForeignKey(
-        InterviewRatingSheet, on_delete=models.CASCADE)
-    points = models.PositiveIntegerField(default=0)
-    expected_points = models.PositiveIntegerField(default=0)
-
-    def __str__(self):  # __unicode__ on Python 2
-        return self.name
-
-
-class JobOpening(models.Model):
-    position = models.ForeignKey(Position, on_delete=models.CASCADE)
-    no_of_openings = models.PositiveIntegerField(default=1)
-    posted_on = models.DateTimeField(default=timezone.now, editable=False)
-
-    def __str__(self):
-        return 'Opening_{}'.format(self.position.id_code)
 
 
 class Document(models.Model):

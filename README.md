@@ -5,13 +5,23 @@
  A tool to save and plan interview related information ideal for a organisation
  that wants to host such a system under its it own hood.
 
-### Tools used:
+### Packages used:
 
 - Backend: Django 4.x
 - Frontend: Bootstrap 3.7
 
+### Running the project
+- With either django command on shell:
 
-- ### Interview Management System:
+  `python manage.py runserver`
+- With docker
+  - Build image:
+    `docker compose build`
+  - Run container:
+    `docker compose up -d`
+
+
+### Interview Management System:
 
   - Schedule Interview for a Candidate. **[Completed]**
   - Add Rounds to a Interview and assign to an interviewer. Leave additional instructions if required **[Completed]**
@@ -36,6 +46,9 @@
   - Auto send interview reminder email.
 
   # Next release plan:
-  - APIs
+  - APIs (ViewSets and serializers)
   - unittests
   - coverage
+  - celery setup
+  - memcache settings
+  - optimize queries
